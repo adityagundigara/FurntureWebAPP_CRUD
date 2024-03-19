@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<FurntureWebAPP_ASP_NET_CORE_MVC.Models.Product>
+
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var isLoggedIn = HttpContextAccessor.HttpContext.Session.GetString("UserSession") != null;
+}
+
+@if(isLoggedIn)
+{
+    <div class="row mb-5">
+        <div class="col">
+            <a asp-controller="ProductCTR" asp-action="AddPRODUCT" class="btn btn-primary">Add PRODUCT</a>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <tr>
+            <td>Id</td>
+            <td>image</td>
+            <td>Name</td>
+            <td>Brand</td>
+            <td>Category</td>
+            <td>Description</td>
+            <td>PRICE</td>
+            <td>CreatedAt</td>
+            <td>Action</td>
+        </tr>
+
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td><img src="~/PRODUCTS/Chair/@product.ImageFileName" height="100px" width="100px" /></td>
+                <td>@product.Name</td>
+                <td>@product.Brand</td>
+                <td>@product.Category</td>
+                <td>@product.Description</td>
+                <td>@product.Price</td>
+                <td>@product.CreatedAt.ToString("dd/mm/yyyy HH:mm:ss")</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="ProductCTR" asp-action="Edit" asp-route-id="@product.Id">Edit</a>
+
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <script>
+        window.location.href = "/Home/Login";
+    </script>
+}
